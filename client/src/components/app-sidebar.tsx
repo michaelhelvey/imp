@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import {
 	Sidebar,
 	SidebarContent,
+	SidebarFiller,
 	SidebarGroup,
 	SidebarHeader,
 	SidebarMenu,
@@ -15,6 +16,7 @@ import {
 	SidebarMenuSubItem,
 	SidebarRail,
 } from "@/components/ui/sidebar.js";
+import { NavUser } from "./nav-user.js";
 
 // Sample data: (todo: track active state etc)
 const data = {
@@ -50,19 +52,9 @@ const data = {
 					title: "Teams",
 					url: "/teams",
 				},
-			],
-		},
-		{
-			title: "Your Account",
-			url: "#",
-			items: [
 				{
-					title: "Preferences",
-					url: "/account/preferences",
-				},
-				{
-					title: "Logout",
-					url: "#",
+					title: "Roles",
+					url: "/roles",
 				},
 			],
 		},
@@ -126,6 +118,17 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 							</SidebarMenuItem>
 						))}
 					</SidebarMenu>
+				</SidebarGroup>
+				<SidebarFiller />
+				<SidebarGroup>
+					<NavUser
+						user={{
+							avatar:
+								"https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.worldhistory.org%2Fimg%2Fc%2Fp%2F1200x627%2F13754.jpg&f=1&nofb=1&ipt=c3fb990ea2a0249fc6e58e5799bdfcc35a37cf3fa1482cceedd3562e63382380&ipo=images",
+							email: "thomas.aquinas@email.com",
+							name: "Thomas Aquinas",
+						}}
+					/>
 				</SidebarGroup>
 			</SidebarContent>
 			<SidebarRail />

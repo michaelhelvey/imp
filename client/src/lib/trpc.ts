@@ -5,8 +5,6 @@ import type { AppRouter } from "server";
 
 export const trpc = createTRPCReact<AppRouter>();
 
-export const defaultMutationOptions = {};
-
 export function useDefaultMutationOptions() {
 	const { toast } = useToast();
 	return {

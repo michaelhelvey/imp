@@ -426,6 +426,21 @@ const SidebarGroup = React.forwardRef<
 });
 SidebarGroup.displayName = "SidebarGroup";
 
+const SidebarFiller = React.forwardRef<
+	HTMLDivElement,
+	React.ComponentProps<"div">
+>(({ className, ...props }, ref) => {
+	return (
+		<div
+			ref={ref}
+			data-sidebar="filler"
+			className={cn("flex flex-1", className)}
+			{...props}
+		/>
+	);
+});
+SidebarGroup.displayName = "SidebarGroup";
+
 const SidebarGroupLabel = React.forwardRef<
 	HTMLDivElement,
 	React.ComponentProps<"div"> & { asChild?: boolean }
@@ -736,6 +751,7 @@ SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
 export {
 	Sidebar,
 	SidebarContent,
+	SidebarFiller,
 	SidebarFooter,
 	SidebarGroup,
 	SidebarGroupAction,

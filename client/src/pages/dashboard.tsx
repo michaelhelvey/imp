@@ -3,6 +3,7 @@ import {
 	NavStateProvider,
 	useNavActiveItem,
 } from "@/components/app-sidebar.js";
+import { ModeToggle } from "@/components/mode-toggle.js";
 import {
 	Breadcrumb,
 	BreadcrumbItem,
@@ -26,10 +27,13 @@ export default function Page() {
 				<AppSidebar />
 				<SidebarInset>
 					<header className="flex h-16 shrink-0 items-center gap-2 border-b">
-						<div className="flex items-center gap-2 px-3">
-							<SidebarTrigger />
-							<Separator orientation="vertical" className="mr-2 h-4" />
-							<StatefulBreadCrumbs />
+						<div className="flex w-full justify-between px-3">
+							<div className="flex items-center gap-2">
+								<SidebarTrigger />
+								<Separator orientation="vertical" className="mr-2 h-4" />
+								<StatefulBreadCrumbs />
+							</div>
+							<ModeToggle />
 						</div>
 					</header>
 					<div className="flex flex-1 flex-col gap-4 p-4">

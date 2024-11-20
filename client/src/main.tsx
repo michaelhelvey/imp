@@ -7,6 +7,7 @@ import "./index.css";
 import { trpc } from "@/lib/trpc.js";
 import { assert } from "@/lib/utils.js";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { ThemeProvider } from "./components/theme-provider.js";
 import { Toaster } from "./components/ui/toaster.js";
 import Dashboard from "./pages/dashboard.js";
 import IncidentsPage from "./pages/incidents.js";
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
 				element: <div>manage users</div>,
 			},
 			{
+				path: "/roles",
+				element: <div>manage roles</div>,
+			},
+			{
 				path: "/teams",
 				element: <div>manage teams</div>,
 			},
@@ -71,11 +76,13 @@ const router = createBrowserRouter([
 
 createRoot(root).render(
 	<StrictMode>
-		<trpc.Provider client={trpcClient} queryClient={queryClient as any}>
-			<QueryClientProvider client={queryClient}>
-				<RouterProvider router={router} />
-				<Toaster />
-			</QueryClientProvider>
-		</trpc.Provider>
+		<ThemeProvider defaultTheme="light" storageKey="ui-theme">
+			<trpc.Provider client={trpcClient} queryClient={queryClient as any}>
+				<QueryClientProvider client={queryClient}>
+					<RouterProvider router={router} />
+					<Toaster />
+				</QueryClientProvider>
+			</trpc.Provider>
+		</ThemeProvider>
 	</StrictMode>,
 );
