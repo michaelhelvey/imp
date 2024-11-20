@@ -5,6 +5,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { $ } from "bun";
+import pg from "pg";
 
 /**
  ***************************************************************************************************
@@ -61,10 +62,12 @@ console.log("Setting up local database");
 await $`docker compose up --wait`;
 
 console.log("Migrating and seeding local database...");
+await dropAndCreateDatabase();
 await $`bun --filter ./server db:push`;
 await $`bun --filter ./server db:seed`;
 
 console.log("✅ All setup.  Run `bun dev` to start the project.");
+process.exit(0);
 
 /**
  ***************************************************************************************************
@@ -84,4 +87,17 @@ async function checkBinExists(command: string) {
 function panic(msg: string) {
 	console.error(msg);
 	process.exit(1);
+}
+
+async function dropAndCreateDatabase() {
+	const client = new pg.Client({
+		user: "postgres",
+		password: "postgres",
+		host: "localhost",
+		port: 5432,
+		database: "postgres",
+	});
+	await client.connect();
+	await client.query("drop database if exists imp;");
+	await client.query("create database imp;");
 }

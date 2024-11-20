@@ -15,6 +15,34 @@ import {
 	usersToRoles,
 } from "./schema.js";
 
+export enum Permission {
+	READ_INCIDENTS = "read:incidents",
+	WRITE_INCIDENTS = "write:incidents",
+	DELETE_INCIDENTS = "delete:incidents",
+
+	READ_SERVICES = "read:services",
+	WRITE_SERVICES = "write:services",
+	DELETE_SERVICES = "delete:services",
+
+	READ_ESCALATION_POLICIES = "read:escalation_policies",
+	WRITE_ESCALATION_POLICIES = "write:escalation_policies",
+	DELETE_ESCALATION_POLICIES = "delete:escalation_policies",
+
+	READ_USERS = "read:users",
+	WRITE_USERS = "write:users",
+	DELETE_USERS = "delete:users",
+
+	READ_TEAMS = "read:teams",
+	WRITE_TEAMS = "write:teams",
+	DELETE_TEAMS = "delete:teams",
+
+	READ_ROLES = "read:roles",
+	WRITE_ROLES = "write:roles",
+	DELETE_ROLES = "delete:roles",
+
+	READ_PERMISSIONS = "read:permissions",
+}
+
 export async function createUser(
 	tx: TransactionLike,
 	user: typeof usersTable.$inferInsert,
@@ -68,6 +96,61 @@ export async function createRole(tx: TransactionLike, role: RoleCreateDTO) {
 	});
 }
 
+export async function getRoleById(tx: TransactionLike, roleId: number) {
+	const results = await tx
+		.select()
+		.from(rolesTable)
+		.where(eq(rolesTable.id, roleId));
+	ok(results.length === 1, "expected to find a role");
+	return results[0];
+}
+
+export async function listRoles(tx: TransactionLike) {
+	return tx.select().from(rolesTable).orderBy(rolesTable.name);
+}
+
+export async function deleteRole(tx: TransactionLike, roleId: number) {
+	const role = await getRoleById(tx, roleId);
+	if (role.is_default) {
+		throw new Error(`Cannot delete default role '${role.name}'`);
+	}
+
+	await tx.delete(rolesTable).where(eq(rolesTable.id, roleId));
+}
+
+export async function attachPermissionToRole(
+	tx: TransactionLike,
+	roleId: number,
+	permission: string,
+) {
+	const role = await getRoleById(tx, roleId);
+	if (role.is_default) {
+		throw new Error("Cannot edit default role");
+	}
+
+	const perm = await getPermissionByNameOrThrow(tx, permission);
+	await tx.insert(rolesToPermissions).values({
+		role_id: roleId,
+		permission_id: perm.id,
+	});
+}
+
+export async function detachPermissionFromRole(
+	tx: TransactionLike,
+	roleId: number,
+	permission: string,
+) {
+	const perm = await getPermissionByNameOrThrow(tx, permission);
+	await tx
+		.delete(rolesToPermissions)
+		.where(
+			and(
+				eq(rolesToPermissions.role_id, roleId),
+				eq(rolesToPermissions.permission_id, perm.id),
+			),
+		);
+}
+
 export async function getPermissionByNameOrThrow(
 	tx: TransactionLike,
 	name: string,
@@ -82,6 +165,13 @@ export async function getPermissionByNameOrThrow(
 	}
 
 	return results[0];
+}
+
+export async function getAllPermissions(tx: TransactionLike) {
+	return tx
+		.select()
+		.from(permissionsTable)
+		.orderBy(permissionsTable.permission);
 }
 
 export async function userHasPermission(
@@ -120,4 +210,16 @@ export async function attachRoleToUser(
 	roleId: number,
 ) {
 	await tx.insert(usersToRoles).values({ user_id: userId, role_id: roleId });
+}
+
+export async function detachRoleFromUser(
+	tx: TransactionLike,
+	userId: string,
+	roleId: number,
+) {
+	await tx
+		.delete(usersToRoles)
+		.where(
+			and(eq(usersToRoles.user_id, userId), eq(usersToRoles.role_id, roleId)),
+		);
 }

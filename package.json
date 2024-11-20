@@ -19,6 +19,7 @@
 	},
 	"workspaces": ["client", "server"],
 	"dependencies": {
-		"lefthook": "1.8.2"
+		"lefthook": "1.8.2",
+		"pg": "8.13.1"
 	}
 }

@@ -1,23 +1,43 @@
 import "./config.js";
-import { eq } from "drizzle-orm";
+import {
+	Permission,
+	attachRoleToUser,
+	createPermission,
+	createRole,
+	createUser,
+} from "./db/authz.js";
 import { db } from "./db/db.js";
-import { usersTable } from "./db/schema.js";
 
 async function main() {
-	const user: typeof usersTable.$inferInsert = {
-		first_name: "John",
-		last_name: "Doe",
-		email: "john.doe@example.com",
-		updated_at: new Date(),
-	};
+	await db.transaction(async (tx) => {
+		// ---------------------- Permissions -------------------------
+		for (const perm of Object.values(Permission)) {
+			await createPermission(tx, perm);
+		}
 
-	await db.insert(usersTable).values(user);
-	console.log("New user created!");
-	const users = await db.select().from(usersTable);
-	console.log("Getting all users from the database: ", users);
+		// ---------------------- Roles ---------------------------
+		const adminRole = await createRole(tx, {
+			roleName: "admin",
+			permissions: Object.values(Permission),
+		});
 
-	await db.delete(usersTable).where(eq(usersTable.email, user.email));
-	console.log("User deleted!");
+		await createRole(tx, {
+			roleName: "read-only",
+			permissions: Object.values(Permission).filter((perm) =>
+				perm.startsWith("read:"),
+			),
+		});
+
+		// ------------------- Default User ------------------------
+		const defaultUser = await createUser(tx, {
+			id: process.env.VITE_DEFAULT_USER_UUID,
+			email: "admin@admin.com",
+			first_name: "Admin",
+			last_name: "Admin",
+		});
+
+		await attachRoleToUser(tx, defaultUser.id, adminRole.id);
+	});
 }
 
 await main();

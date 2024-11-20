@@ -21,11 +21,9 @@ const trpcClient = trpc.createClient({
 		httpBatchLink({
 			url: import.meta.env.VITE_TRPC_SERVER_URL,
 			async headers() {
-				// FIXME: normally this would not be hard-coded, and would come from an HTTP only cookie
-				// in the wrapping hosting provider. I'm just doing this for now so I don't have to implement
-				// a auth skeleton in the hosting provider.  More on the auth/hosting/multi-tenancy design
-				// later.
-				return { "x-user-id": "1234" };
+				// Note: this would not normally be hard-coded, typically this would be provided by whatever
+				// hosting system is doing the authentication
+				return { "x-user-id": import.meta.env.VITE_DEFAULT_USER_UUID };
 			},
 		}),
 	],
