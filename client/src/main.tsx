@@ -7,7 +7,9 @@ import "./index.css";
 import { trpc } from "@/lib/trpc.js";
 import { assert } from "@/lib/utils.js";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { Toaster } from "./components/ui/toaster.js";
 import Dashboard from "./pages/dashboard.js";
+import IncidentsPage from "./pages/incidents.js";
 
 const root = document.getElementById("root");
 assert(root, "Expected document to contain #root element");
@@ -41,7 +43,7 @@ const router = createBrowserRouter([
 		children: [
 			{
 				index: true,
-				element: <div>All incidents</div>,
+				element: <IncidentsPage />,
 			},
 			{
 				path: "/services",
@@ -72,6 +74,7 @@ createRoot(root).render(
 		<trpc.Provider client={trpcClient} queryClient={queryClient as any}>
 			<QueryClientProvider client={queryClient}>
 				<RouterProvider router={router} />
+				<Toaster />
 			</QueryClientProvider>
 		</trpc.Provider>
 	</StrictMode>,
