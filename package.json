@@ -1,0 +1,24 @@
+{
+	"name": "incident-manager",
+	"module": "index.ts",
+	"type": "module",
+	"scripts": {
+		"setup": "bun ./scripts/setup.ts",
+		"dev": "bun ./scripts/dev.ts",
+		"lint": "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true **/*",
+		"test:e2e": "bunx playwright test",
+		"test:unit": "bun --filter ./client test && bun --filter ./server test"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.9.4",
+		"@playwright/test": "1.49.0",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "5.6.3"
+	},
+	"workspaces": ["client", "server"],
+	"dependencies": {
+		"lefthook": "1.8.2"
+	}
+}
