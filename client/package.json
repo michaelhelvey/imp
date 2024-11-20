@@ -10,15 +10,19 @@
 		"test": "bun test"
 	},
 	"dependencies": {
-		"@radix-ui/react-slot": "1.1.0",
+		"@radix-ui/react-dialog": "^1.1.2",
+		"@radix-ui/react-separator": "^1.1.0",
+		"@radix-ui/react-slot": "^1.1.0",
+		"@radix-ui/react-tooltip": "^1.1.4",
 		"@tanstack/react-query": "5.60.5",
 		"@trpc/client": "11.0.0-rc.638",
 		"@trpc/react-query": "11.0.0-rc.638",
-		"class-variance-authority": "0.7.0",
+		"class-variance-authority": "^0.7.0",
 		"clsx": "2.1.1",
-		"lucide-react": "0.460.0",
+		"lucide-react": "^0.460.0",
 		"react": "18.3.1",
 		"react-dom": "18.3.1",
+		"react-router-dom": "6.28.0",
 		"tailwind-merge": "2.5.4",
 		"tailwindcss-animate": "1.0.7"
 	},

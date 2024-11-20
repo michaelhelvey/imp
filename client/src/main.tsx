@@ -4,9 +4,10 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import "./index.css";
-import App from "@/app.js";
 import { trpc } from "@/lib/trpc.js";
 import { assert } from "@/lib/utils.js";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Dashboard from "./pages/dashboard.js";
 
 const root = document.getElementById("root");
 assert(root, "Expected document to contain #root element");
@@ -27,11 +28,50 @@ const trpcClient = trpc.createClient({
 	],
 });
 
+const router = createBrowserRouter([
+	{
+		path: "/",
+		element: <Dashboard />,
+		errorElement: (
+			<div>
+				something terrible happened, but I didn't write an error page, so good
+				luck figuring out what it was
+			</div>
+		),
+		children: [
+			{
+				index: true,
+				element: <div>All incidents</div>,
+			},
+			{
+				path: "/services",
+				element: <div>manage services</div>,
+			},
+			{
+				path: "/escalation-policies",
+				element: <div>manage escalation policies</div>,
+			},
+			{
+				path: "/users",
+				element: <div>manage users</div>,
+			},
+			{
+				path: "/teams",
+				element: <div>manage teams</div>,
+			},
+			{
+				path: "/account/preferences",
+				element: <div>your account preferences</div>,
+			},
+		],
+	},
+]);
+
 createRoot(root).render(
 	<StrictMode>
 		<trpc.Provider client={trpcClient} queryClient={queryClient as any}>
 			<QueryClientProvider client={queryClient}>
-				<App />
+				<RouterProvider router={router} />
 			</QueryClientProvider>
 		</trpc.Provider>
 	</StrictMode>,
