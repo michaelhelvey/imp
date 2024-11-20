@@ -7,7 +7,7 @@
 		"dev": "bun ./scripts/dev.ts",
 		"lint": "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true **/*",
 		"test:e2e": "bunx playwright test",
-		"test:unit": "bun --filter ./client test && bun --filter ./server test"
+		"verify": "bun setup && bun lint && bun test && bun test:e2e"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",

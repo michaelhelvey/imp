@@ -38,7 +38,7 @@ There are two kinds of tests available in the project: e2e tests using playwrigh
 using bun.
 
 - unit tests: `bun test`
-- e2e tests: `bun e2e`
+- e2e tests: `bun test:e2e`
 
 For more information about running e2e tests and the various utilities avaialble to you via the
 playwright CLI, please see the [documentation](https://playwright.dev/).

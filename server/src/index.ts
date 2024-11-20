@@ -22,8 +22,9 @@ const router = t.router({
 	helloMutation: t.procedure
 		.input(z.object({ name: z.string() }))
 		.mutation(async ({ input }) => {
-			logger.debug({ msg: `helloMutation: ${input.name}` });
-			return `Hello, ${input.name}`;
+			throw new Error("Everything has exploded");
+			// logger.debug({ msg: `helloMutation: ${input.name}` });
+			// return `Hello, ${input.name}`;
 		}),
 });
 

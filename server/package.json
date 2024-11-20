@@ -4,12 +4,11 @@
 	"main": "src/index.ts",
 	"type": "module",
 	"scripts": {
-		"dev": "bun -r dotenv/config --watch ./src/index.ts",
-		"test": "bun test",
+		"dev": "bun --watch ./src/index.ts",
 		"db:push": "bunx drizzle-kit push",
 		"db:generate": "bunx drizzle-kit generate",
 		"db:migrate": "bunx drizzle-kit migrate",
-		"db:seed": "bun -r dotenv/config ./src/seed.ts"
+		"db:seed": "bun ./src/seed.ts"
 	},
 	"dependencies": {
 		"@trpc/server": "11.0.0-rc.638",
@@ -21,7 +20,6 @@
 	},
 	"devDependencies": {
 		"@types/pg": "8.11.10",
-		"dotenv": "16.4.5",
 		"drizzle-kit": "0.28.1",
 		"tsx": "4.19.2"
 	}
