@@ -2,11 +2,11 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
 import "./index.css";
 import { trpc } from "@/lib/trpc.js";
 import { assert } from "@/lib/utils.js";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "./components/theme-provider.js";
 import { Toaster } from "./components/ui/toaster.js";
 import Dashboard from "./pages/dashboard.js";

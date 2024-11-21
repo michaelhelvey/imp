@@ -1,5 +1,5 @@
 {
-	"id": "5dd692a2-fcac-4ebb-8b6f-4254cdf49cb8",
+	"id": "48a7b38f-a3d8-4fc0-a594-056867b44175",
 	"prevId": "00000000-0000-0000-0000-000000000000",
 	"version": "7",
 	"dialect": "postgresql",
@@ -157,54 +157,17 @@
 			"name": "permissions",
 			"schema": "",
 			"columns": {
-				"id": {
-					"name": "id",
-					"type": "integer",
-					"primaryKey": true,
-					"notNull": true,
-					"identity": {
-						"type": "byDefault",
-						"name": "permissions_id_seq",
-						"schema": "public",
-						"increment": "1",
-						"startWith": "1",
-						"minValue": "1",
-						"maxValue": "2147483647",
-						"cache": "1",
-						"cycle": false
-					}
-				},
-				"updated_at": {
-					"name": "updated_at",
-					"type": "timestamp",
-					"primaryKey": false,
-					"notNull": true,
-					"default": "now()"
-				},
-				"created_at": {
-					"name": "created_at",
-					"type": "timestamp",
-					"primaryKey": false,
-					"notNull": true,
-					"default": "now()"
-				},
 				"permission": {
 					"name": "permission",
 					"type": "varchar(255)",
-					"primaryKey": false,
+					"primaryKey": true,
 					"notNull": true
 				}
 			},
 			"indexes": {},
 			"foreignKeys": {},
 			"compositePrimaryKeys": {},
-			"uniqueConstraints": {
-				"permissions_permission_unique": {
-					"name": "permissions_permission_unique",
-					"nullsNotDistinct": false,
-					"columns": ["permission"]
-				}
-			},
+			"uniqueConstraints": {},
 			"policies": {},
 			"checkConstraints": {},
 			"isRLSEnabled": false
@@ -284,7 +247,7 @@
 				},
 				"permission_id": {
 					"name": "permission_id",
-					"type": "integer",
+					"type": "varchar",
 					"primaryKey": false,
 					"notNull": true
 				}
@@ -300,12 +263,12 @@
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				},
-				"roles_to_permissions_permission_id_permissions_id_fk": {
-					"name": "roles_to_permissions_permission_id_permissions_id_fk",
+				"roles_to_permissions_permission_id_permissions_permission_fk": {
+					"name": "roles_to_permissions_permission_id_permissions_permission_fk",
 					"tableFrom": "roles_to_permissions",
 					"tableTo": "permissions",
 					"columnsFrom": ["permission_id"],
-					"columnsTo": ["id"],
+					"columnsTo": ["permission"],
 					"onDelete": "no action",
 					"onUpdate": "no action"
 				}

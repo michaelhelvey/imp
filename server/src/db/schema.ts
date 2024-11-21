@@ -10,7 +10,6 @@ import {
 	uuid,
 	varchar,
 } from "drizzle-orm/pg-core";
-import { getDefaultLibFileName } from "typescript";
 
 /**
  ***************************************************************************************************
@@ -76,9 +75,9 @@ export const rolesToPermissions = pgTable(
 		role_id: integer()
 			.notNull()
 			.references(() => rolesTable.id),
-		permission_id: integer()
+		permission_id: varchar()
 			.notNull()
-			.references(() => permissionsTable.id),
+			.references(() => permissionsTable.permission),
 	},
 	(t) => ({
 		pk: primaryKey({ columns: [t.role_id, t.permission_id] }),
@@ -90,8 +89,7 @@ export const rolesRelations = relations(rolesTable, ({ many }) => ({
 }));
 
 export const permissionsTable = pgTable("permissions", {
-	...defaultFieldsWithId,
-	permission: varchar({ length: 255 }).notNull().unique(),
+	permission: varchar({ length: 255 }).primaryKey(),
 });
 
 /**

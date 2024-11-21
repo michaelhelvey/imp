@@ -5,9 +5,9 @@
 	"scripts": {
 		"setup": "bun ./scripts/setup.ts",
 		"dev": "bun ./scripts/dev.ts",
-		"lint": "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true **/*",
+		"lint": "biome check --write --no-errors-on-unmatched --files-ignore-unknown=true",
 		"test:e2e": "bunx playwright test",
-		"verify": "bun setup && bun lint && bun test && bun test:e2e"
+		"verify": "bun setup && bun lint && bun test && bun test:e2e && bun --filter '*' typecheck"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
